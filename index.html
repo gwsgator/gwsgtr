@@ -25,18 +25,6 @@
         #notes-section, #todo-section { width: 49%; }
         #notes, #todo { width: 100%; height: 120px; background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 10px; resize: vertical; font-family: inherit; box-sizing: border-box; }
         .news-list { list-style: none; padding: 0; display: flex; gap: 20px; margin-top: 10px; }
-
-        /* Footer ASCII Art */
-        .ascii-footer {
-            color: #00ffff;
-            font-family: monospace;
-            margin-top: 60px;
-            text-align: center;
-            pointer-events: none;
-            line-height: 1.2;
-            overflow: hidden;
-            white-space: pre;
-        }
     </style>
 </head>
 <body>
@@ -49,6 +37,11 @@
             <input type="text" id="exact-phrase" placeholder="Exact Phrase">
             <input type="text" id="must-contain" placeholder="Must Contain">
             <button onclick="launchAdvSearch()">LAUNCH SEARCH</button>
+            <button onclick="clearSearch()" style="background:#ff4444; color:#fff;">CLEAR</button>
+        </div>
+        <div style="margin-left: auto; display: flex; gap: 10px;">
+            <button onclick="window.open('https://besthomepageever.com/', '_blank')">BHE</button>
+            <button onclick="window.open('https://www.protopage.com/trjstartpage', '_blank')">PRO</button>
         </div>
     </div>
 
@@ -97,16 +90,6 @@
         </section>
     </div>
 
-    <pre class="ascii-footer">
-          /\             /\                /\
-         /  \    /\     /  \      /\      /  \    /\
-        /    \  /  \   /    \    /  \    /    \  /  \
-       /      \/    \ /      \  /    \  /      \/    \
-      /        \     /        \/      \/        \     \
-     /          \   /          \      /          \     \
-    /____________\_/____________\____/____________\_____\
-    </pre>
-
     <script>
         function updateClock() {
             const now = new Date();
@@ -130,24 +113,58 @@
             if (query.trim()) window.open('https://www.google.com/search?q=' + encodeURIComponent(query.trim()), '_blank');
         }
 
+        function clearSearch() {
+            document.getElementById('main-search').value = '';
+            document.getElementById('exact-phrase').value = '';
+            document.getElementById('must-contain').value = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') clearSearch();
+        });
+
         const notes = document.getElementById('notes');
         const todo = document.getElementById('todo');
         const syncStatus = document.getElementById('sync-status');
         const API = '/.netlify/functions/dashboard-data';
         let saveTimeout;
 
+        async function pushData(notesVal, todoVal) {
+            const res = await fetch(API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ notes: notesVal, todo: todoVal })
+            });
+            if (!res.ok) throw new Error('bad response');
+        }
+
         async function loadData() {
+            const localNotes = localStorage.getItem('myNotes') || '';
+            const localTodo = localStorage.getItem('myTodo') || '';
             try {
                 const res = await fetch(API);
                 if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
-                notes.value = data.notes || '';
-                todo.value = data.todo || '';
-                syncStatus.innerText = 'Synced';
+                const remoteNotes = data.notes || '';
+                const remoteTodo = data.todo || '';
+
+                if (!remoteNotes && !remoteTodo && (localNotes || localTodo)) {
+                    // Cloud store is empty but this browser has local data.
+                    // Seed the cloud store from local data instead of overwriting it with blank.
+                    notes.value = localNotes;
+                    todo.value = localTodo;
+                    syncStatus.innerText = 'Syncing...';
+                    await pushData(localNotes, localTodo);
+                    syncStatus.innerText = 'Synced';
+                } else {
+                    notes.value = remoteNotes;
+                    todo.value = remoteTodo;
+                    syncStatus.innerText = 'Synced';
+                }
             } catch (err) {
                 syncStatus.innerText = 'Offline (local only)';
-                notes.value = localStorage.getItem('myNotes') || '';
-                todo.value = localStorage.getItem('myTodo') || '';
+                notes.value = localNotes;
+                todo.value = localTodo;
             }
         }
 
@@ -158,12 +175,7 @@
             localStorage.setItem('myTodo', todo.value);
             saveTimeout = setTimeout(async () => {
                 try {
-                    const res = await fetch(API, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ notes: notes.value, todo: todo.value })
-                    });
-                    if (!res.ok) throw new Error('bad response');
+                    await pushData(notes.value, todo.value);
                     syncStatus.innerText = 'Synced';
                 } catch (err) {
                     syncStatus.innerText = 'Offline (local only)';
