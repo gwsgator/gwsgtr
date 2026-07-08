@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TRJ DASHBOARD</title>
+    <style>
+        body { background: #121212; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
+        h1 { font-size: 1.5em; border-bottom: 2px solid #00ff00; padding-bottom: 10px; display: inline-block; }
+        h2 { border-bottom: 1px solid #00ff00; padding-bottom: 5px; font-size: 1.1em; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 8px 0; }
+        a { color: #00cc00; text-decoration: none; }
+        a:hover { color: #ffffff; text-shadow: 0 0 5px #00ff00; }
+
+        .search-area { display: flex; gap: 20px; margin-bottom: 30px; align-items: flex-start; }
+        .search-group { display: flex; gap: 10px; align-items: center; }
+        input[type="text"] { background: #000; border: 1px solid #00ff00; color: #fff; padding: 8px; width: 200px; }
+        button { background: #00ff00; color: #000; border: none; padding: 8px 15px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #ffffff; }
+
+        #clock-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; }
+        #sync-status { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
+        .input-wrapper { display: flex; gap: 2%; margin-top: 10px; width: 100%; }
+        #notes-section, #todo-section { width: 49%; }
+        #notes, #todo { width: 100%; height: 120px; background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 10px; resize: vertical; font-family: inherit; box-sizing: border-box; }
+        .news-list { list-style: none; padding: 0; display: flex; gap: 20px; margin-top: 10px; }
+
+        /* Footer ASCII Art */
+        .ascii-footer {
+            color: #00ffff;
+            font-family: monospace;
+            margin-top: 60px;
+            text-align: center;
+            pointer-events: none;
+            line-height: 1.2;
+            overflow: hidden;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock-container"><div id="date"></div><div id="time"></div><div id="sync-status">Loading...</div></div>
+    <h1>TRJ DASHBOARD</h1>
+
+    <div class="search-area">
+        <input type="text" id="main-search" placeholder="Search (press 's')" onkeydown="if(event.key==='Enter') launchSearch()">
+        <div class="search-group">
+            <input type="text" id="exact-phrase" placeholder="Exact Phrase">
+            <input type="text" id="must-contain" placeholder="Must Contain">
+            <button onclick="launchAdvSearch()">LAUNCH SEARCH</button>
+        </div>
+    </div>
+
+    <div class="input-wrapper">
+        <section id="notes-section"><h2>Quick Notes</h2><textarea id="notes" placeholder="Jot something down..."></textarea></section>
+        <section id="todo-section"><h2>To-Do List</h2><textarea id="todo" placeholder="Tasks to do..."></textarea></section>
+    </div>
+
+    <section>
+        <h2>News Headlines</h2>
+        <ul class="news-list">
+            <li><a href="https://www.bbc.com/news" target="_blank">BBC News</a></li>
+            <li><a href="https://www.npr.org" target="_blank">NPR</a></li>
+            <li><a href="https://www.reuters.com" target="_blank">Reuters</a></li>
+        </ul>
+    </section>
+
+    <div class="grid">
+        <section><h2>Work</h2>
+            <ul>
+                <li><a href="https://app.procore.com/8863/company/home/list" target="_blank">Procore</a></li>
+                <li><a href="https://howellconstruction-hff.viewpointforcloud.com/account/login?ReturnUrl=%2Faprouter%2Findex" target="_blank">VP Employee Portal</a></li>
+                <li><a href="https://dynamic-manatee-0e8fa8.netlify.app/" target="_blank">Howell Email Assistant</a></li>
+                <li><a href="https://howellconstruction.sharepoint.com/Shared%20Documents/Forms/AllItems.aspx" target="_blank">SharePoint</a></li>
+            </ul>
+        </section>
+        <section><h2>AI Tools</h2>
+            <ul><li><a href="https://gemini.google.com" target="_blank">Gemini</a></li><li><a href="https://claude.ai" target="_blank">Claude</a></li><li><a href="https://chatgpt.com" target="_blank">ChatGPT</a></li></ul>
+        </section>
+        <section><h2>Personal</h2>
+            <ul>
+                <li><a href="https://outlook.live.com" target="_blank">Outlook</a></li>
+                <li><a href="https://gmail.com" target="_blank">Gmail</a></li>
+                <li><a href="https://drive.google.com" target="_blank">Google Drive</a></li>
+                <li><a href="https://onedrive.live.com/" target="_blank">OneDrive</a></li>
+            </ul>
+        </section>
+        <section><h2>Knowledge</h2>
+            <ul><li><a href="https://wikipedia.org" target="_blank">Wikipedia</a></li><li><a href="https://archive.org" target="_blank">Archive.org</a></li></ul>
+        </section>
+        <section><h2>News/Sports</h2>
+            <ul><li><a href="https://nytimes.com" target="_blank">NYT</a></li><li><a href="https://espn.com" target="_blank">ESPN</a></li><li><a href="https://theathletic.com" target="_blank">The Athletic</a></li></ul>
+        </section>
+        <section><h2>General</h2>
+            <ul><li><a href="https://reddit.com" target="_blank">Reddit</a></li><li><a href="https://youtube.com" target="_blank">YouTube</a></li><li><a href="https://goodreads.com" target="_blank">Goodreads</a></li></ul>
+        </section>
+    </div>
+
+    <pre class="ascii-footer">
+          /\             /\                /\
+         /  \    /\     /  \      /\      /  \    /\
+        /    \  /  \   /    \    /  \    /    \  /  \
+       /      \/    \ /      \  /    \  /      \/    \
+      /        \     /        \/      \/        \     \
+     /          \   /          \      /          \     \
+    /____________\_/____________\____/____________\_____\
+    </pre>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('time').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        function launchSearch() {
+            const query = document.getElementById('main-search').value;
+            if(query) window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
+        }
+
+        function launchAdvSearch() {
+            let main = document.getElementById('main-search').value;
+            let phrase = document.getElementById('exact-phrase').value;
+            let must = document.getElementById('must-contain').value;
+            let query = main;
+            if (phrase) query += ' "' + phrase + '"';
+            if (must) query += ' ' + must.split(' ').map(w => '+' + w).join(' ');
+            if (query.trim()) window.open('https://www.google.com/search?q=' + encodeURIComponent(query.trim()), '_blank');
+        }
+
+        const notes = document.getElementById('notes');
+        const todo = document.getElementById('todo');
+        const syncStatus = document.getElementById('sync-status');
+        const API = '/.netlify/functions/dashboard-data';
+        let saveTimeout;
+
+        async function loadData() {
+            try {
+                const res = await fetch(API);
+                if (!res.ok) throw new Error('bad response');
+                const data = await res.json();
+                notes.value = data.notes || '';
+                todo.value = data.todo || '';
+                syncStatus.innerText = 'Synced';
+            } catch (err) {
+                syncStatus.innerText = 'Offline (local only)';
+                notes.value = localStorage.getItem('myNotes') || '';
+                todo.value = localStorage.getItem('myTodo') || '';
+            }
+        }
+
+        function saveData() {
+            clearTimeout(saveTimeout);
+            syncStatus.innerText = 'Saving...';
+            localStorage.setItem('myNotes', notes.value);
+            localStorage.setItem('myTodo', todo.value);
+            saveTimeout = setTimeout(async () => {
+                try {
+                    const res = await fetch(API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ notes: notes.value, todo: todo.value })
+                    });
+                    if (!res.ok) throw new Error('bad response');
+                    syncStatus.innerText = 'Synced';
+                } catch (err) {
+                    syncStatus.innerText = 'Offline (local only)';
+                }
+            }, 800);
+        }
+
+        notes.addEventListener('input', saveData);
+        todo.addEventListener('input', saveData);
+        loadData();
+    </script>
+</body>
+</html>
