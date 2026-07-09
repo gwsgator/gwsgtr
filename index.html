@@ -52,7 +52,6 @@
         <div style="margin-left: auto; display: flex; gap: 10px;">
             <button onclick="window.open('https://besthomepageever.com/', '_blank')">BHE</button>
             <button onclick="window.open('https://www.protopage.com/trjstartpage', '_blank')">PRO</button>
-            <button onclick="window.open('https://termstart.netlify.app/', '_blank')">TERM</button>
         </div>
     </div>
 
@@ -144,7 +143,13 @@
         }
 
         document.addEventListener('keydown', (e) => {
+            const tag = document.activeElement.tagName;
+            const isTyping = tag === 'INPUT' || tag === 'TEXTAREA';
             if (e.key === 'Escape') clearSearch();
+            if (e.key === 's' && !isTyping) {
+                e.preventDefault();
+                document.getElementById('main-search').focus();
+            }
         });
 
         const notes = document.getElementById('notes');
