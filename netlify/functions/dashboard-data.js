@@ -2,8 +2,16 @@ const { getStore } = require('@netlify/blobs');
 
 const KEY = 'trj-dashboard';
 
+function getBlobsStore() {
+  return getStore({
+    name: 'dashboard-data',
+    siteID: process.env.BLOBS_SITE_ID,
+    token: process.env.BLOBS_TOKEN
+  });
+}
+
 exports.handler = async (event) => {
-  const store = getStore('dashboard-data');
+  const store = getBlobsStore();
 
   if (event.httpMethod === 'GET') {
     try {
