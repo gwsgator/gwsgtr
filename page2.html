@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TRJ DASHBOARD</title>
+    <title>TRJ DASHBOARD - PAGE 2</title>
     <style>
         body { background: #121212; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 40px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
@@ -23,13 +23,9 @@
 
         #clock-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; }
         #sync-status { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
-        .section-toolbar { display: flex; justify-content: space-between; align-items: center; }
+        .section-toolbar { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
         .toolbar-buttons { display: flex; gap: 8px; }
         .small-btn { font-size: 0.75em; padding: 4px 10px; }
-        .input-wrapper { display: flex; gap: 2%; margin-top: 10px; width: 100%; }
-        #notes-section, #todo-section { width: 49%; }
-        #notes, #todo { width: 100%; height: 360px; background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 10px; resize: vertical; font-family: inherit; box-sizing: border-box; }
-        .news-list { list-style: none; padding: 0; display: flex; gap: 20px; margin-top: 10px; }
 
         #history-panel { display: none; margin-top: 15px; border: 1px solid #00ff00; padding: 15px; background: #000; }
         #history-panel.open { display: block; }
@@ -37,6 +33,16 @@
         .history-entry:last-child { border-bottom: none; }
         .history-preview { font-size: 0.85em; color: #00cc00; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
         .history-time { font-size: 0.8em; color: #00cc00; white-space: nowrap; }
+
+        .panels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .panel { border: 1px solid #00ff00; background: #000; padding: 10px; display: flex; flex-direction: column; box-sizing: border-box; }
+        .panel-title { background: transparent; border: none; border-bottom: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 1.05em; font-weight: bold; padding: 4px 2px; margin-bottom: 8px; width: 100%; box-sizing: border-box; }
+        .panel-title:focus { outline: none; border-bottom: 1px solid #ffffff; }
+        .panel textarea { flex: 1; min-height: 180px; background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 8px; resize: vertical; font-family: inherit; box-sizing: border-box; width: 100%; }
+
+        @media (max-width: 900px) {
+            .panels-grid { grid-template-columns: repeat(1, 1fr); }
+        }
     </style>
 </head>
 <body>
@@ -52,70 +58,26 @@
             <button onclick="clearSearch()" style="background:#ff4444; color:#fff;">CLEAR</button>
         </div>
         <div style="margin-left: auto; display: flex; gap: 10px;">
-            <button class="accent-btn" onclick="window.location.href='page2.html'">PAGE2</button>
+            <button class="accent-btn" onclick="window.location.href='index.html'">HOME</button>
             <button onclick="window.open('https://besthomepageever.com/', '_blank')">BHE</button>
             <button onclick="window.open('https://www.protopage.com/trjstartpage', '_blank')">PRO</button>
             <button onclick="window.open('https://termstart.netlify.app/', '_blank')">TERM</button>
-            <button onclick="window.open('http://10.0.0.20:19999', '_blank')">NET</button>
         </div>
     </div>
 
     <div class="section-toolbar">
-        <h2 style="border-bottom: none; padding-bottom: 0;">Notes &amp; To-Do</h2>
+        <h2 style="border-bottom: none; padding-bottom: 0;">Notes Grid</h2>
         <div class="toolbar-buttons">
             <button class="small-btn" onclick="manualSave()">SAVE NOW</button>
             <button class="small-btn" onclick="toggleHistory()">HISTORY</button>
         </div>
     </div>
 
-    <div class="input-wrapper">
-        <section id="notes-section"><h2>Quick Notes</h2><textarea id="notes" placeholder="Jot something down..."></textarea></section>
-        <section id="todo-section"><h2>To-Do List</h2><textarea id="todo" placeholder="Tasks to do..."></textarea></section>
-    </div>
+    <div class="panels-grid" id="panels-grid"></div>
 
     <div id="history-panel">
         <strong>Last 5 saved versions</strong>
         <div id="history-list">Loading history...</div>
-    </div>
-
-    <section>
-        <h2>News Headlines</h2>
-        <ul class="news-list">
-            <li><a href="https://www.bbc.com/news" target="_blank">BBC News</a></li>
-            <li><a href="https://www.npr.org" target="_blank">NPR</a></li>
-            <li><a href="https://www.reuters.com" target="_blank">Reuters</a></li>
-        </ul>
-    </section>
-
-    <div class="grid">
-        <section><h2>Work</h2>
-            <ul>
-                <li><a href="https://app.procore.com/8863/company/home/list" target="_blank">Procore</a></li>
-                <li><a href="https://howellconstruction-hff.viewpointforcloud.com/account/login?ReturnUrl=%2Faprouter%2Findex" target="_blank">VP Employee Portal</a></li>
-                <li><a href="https://dynamic-manatee-0e8fa8.netlify.app/" target="_blank">Howell Email Assistant</a></li>
-                <li><a href="https://howellconstruction.sharepoint.com/Shared%20Documents/Forms/AllItems.aspx" target="_blank">SharePoint</a></li>
-            </ul>
-        </section>
-        <section><h2>AI Tools</h2>
-            <ul><li><a href="https://gemini.google.com" target="_blank">Gemini</a></li><li><a href="https://claude.ai" target="_blank">Claude</a></li><li><a href="https://chatgpt.com" target="_blank">ChatGPT</a></li></ul>
-        </section>
-        <section><h2>Personal</h2>
-            <ul>
-                <li><a href="https://outlook.live.com" target="_blank">Outlook</a></li>
-                <li><a href="https://gmail.com" target="_blank">Gmail</a></li>
-                <li><a href="https://drive.google.com" target="_blank">Google Drive</a></li>
-                <li><a href="https://onedrive.live.com/" target="_blank">OneDrive</a></li>
-            </ul>
-        </section>
-        <section><h2>Knowledge</h2>
-            <ul><li><a href="https://wikipedia.org" target="_blank">Wikipedia</a></li><li><a href="https://archive.org" target="_blank">Archive.org</a></li></ul>
-        </section>
-        <section><h2>News/Sports</h2>
-            <ul><li><a href="https://nytimes.com" target="_blank">NYT</a></li><li><a href="https://espn.com" target="_blank">ESPN</a></li><li><a href="https://theathletic.com" target="_blank">The Athletic</a></li></ul>
-        </section>
-        <section><h2>General</h2>
-            <ul><li><a href="https://reddit.com" target="_blank">Reddit</a></li><li><a href="https://youtube.com" target="_blank">YouTube</a></li><li><a href="https://goodreads.com" target="_blank">Goodreads</a></li></ul>
-        </section>
     </div>
 
     <script>
@@ -157,13 +119,53 @@
             }
         });
 
-        const notes = document.getElementById('notes');
-        const todo = document.getElementById('todo');
+        const PANEL_COUNT = 9;
         const syncStatus = document.getElementById('sync-status');
         const historyPanel = document.getElementById('history-panel');
         const historyList = document.getElementById('history-list');
-        const API = '/.netlify/functions/dashboard-data';
+        const panelsGrid = document.getElementById('panels-grid');
+        const API = '/.netlify/functions/page2-data';
         let saveTimeout;
+
+        function defaultPanels() {
+            return Array.from({ length: PANEL_COUNT }, (_, i) => ({
+                id: 'p' + (i + 1),
+                title: 'Panel ' + (i + 1),
+                content: ''
+            }));
+        }
+
+        function buildPanels(panels) {
+            panelsGrid.innerHTML = '';
+            panels.forEach((p) => {
+                const section = document.createElement('div');
+                section.className = 'panel';
+                section.dataset.id = p.id;
+
+                const titleInput = document.createElement('input');
+                titleInput.type = 'text';
+                titleInput.className = 'panel-title';
+                titleInput.value = p.title;
+                titleInput.addEventListener('input', saveData);
+
+                const textarea = document.createElement('textarea');
+                textarea.placeholder = 'Jot something down...';
+                textarea.value = p.content;
+                textarea.addEventListener('input', saveData);
+
+                section.appendChild(titleInput);
+                section.appendChild(textarea);
+                panelsGrid.appendChild(section);
+            });
+        }
+
+        function readPanelsFromDOM() {
+            return Array.from(panelsGrid.children).map((section) => ({
+                id: section.dataset.id,
+                title: section.querySelector('.panel-title').value,
+                content: section.querySelector('textarea').value
+            }));
+        }
 
         function formatTime(isoString) {
             if (!isoString) return '';
@@ -174,52 +176,51 @@
             syncStatus.innerText = 'Synced ' + formatTime(isoString);
         }
 
-        async function pushData(notesVal, todoVal) {
+        async function pushData(panels) {
             const res = await fetch(API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ notes: notesVal, todo: todoVal })
+                body: JSON.stringify({ panels: panels })
             });
             if (!res.ok) throw new Error('bad response');
             return res.json();
         }
 
         async function loadData() {
-            const localNotes = localStorage.getItem('myNotes') || '';
-            const localTodo = localStorage.getItem('myTodo') || '';
+            const localRaw = localStorage.getItem('page2Panels');
+            const localPanels = localRaw ? JSON.parse(localRaw) : null;
             try {
                 const res = await fetch(API);
                 if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
-                const remoteNotes = data.notes || '';
-                const remoteTodo = data.todo || '';
+                const remotePanels = data.panels && data.panels.length ? data.panels : null;
 
-                if (!remoteNotes && !remoteTodo && (localNotes || localTodo)) {
-                    notes.value = localNotes;
-                    todo.value = localTodo;
+                if (!remotePanels && localPanels) {
+                    buildPanels(localPanels);
                     syncStatus.innerText = 'Syncing...';
-                    const result = await pushData(localNotes, localTodo);
+                    const result = await pushData(localPanels);
                     setSynced(result.updatedAt);
-                } else {
-                    notes.value = remoteNotes;
-                    todo.value = remoteTodo;
+                } else if (remotePanels) {
+                    buildPanels(remotePanels);
                     setSynced(data.updatedAt);
+                } else {
+                    buildPanels(defaultPanels());
+                    syncStatus.innerText = 'Ready';
                 }
             } catch (err) {
                 syncStatus.innerText = 'Offline (local only)';
-                notes.value = localNotes;
-                todo.value = localTodo;
+                buildPanels(localPanels || defaultPanels());
             }
         }
 
         function saveData() {
             clearTimeout(saveTimeout);
             syncStatus.innerText = 'Saving...';
-            localStorage.setItem('myNotes', notes.value);
-            localStorage.setItem('myTodo', todo.value);
+            const panels = readPanelsFromDOM();
+            localStorage.setItem('page2Panels', JSON.stringify(panels));
             saveTimeout = setTimeout(async () => {
                 try {
-                    const result = await pushData(notes.value, todo.value);
+                    const result = await pushData(panels);
                     setSynced(result.updatedAt);
                 } catch (err) {
                     syncStatus.innerText = 'Offline (local only)';
@@ -230,10 +231,10 @@
         async function manualSave() {
             clearTimeout(saveTimeout);
             syncStatus.innerText = 'Saving...';
-            localStorage.setItem('myNotes', notes.value);
-            localStorage.setItem('myTodo', todo.value);
+            const panels = readPanelsFromDOM();
+            localStorage.setItem('page2Panels', JSON.stringify(panels));
             try {
-                const result = await pushData(notes.value, todo.value);
+                const result = await pushData(panels);
                 setSynced(result.updatedAt);
             } catch (err) {
                 syncStatus.innerText = 'Offline (local only)';
@@ -244,6 +245,10 @@
             if (!str) return '(empty)';
             const flat = str.replace(/\s+/g, ' ').trim();
             return flat.length > len ? flat.slice(0, len) + '...' : (flat || '(empty)');
+        }
+
+        function previewPanels(panels) {
+            return panels.map(p => p.title + ': ' + truncate(p.content, 20)).join(' | ');
         }
 
         async function loadHistory() {
@@ -262,7 +267,7 @@
                     row.className = 'history-entry';
                     const preview = document.createElement('div');
                     preview.className = 'history-preview';
-                    preview.innerText = 'Notes: ' + truncate(entry.notes, 40) + '  |  To-Do: ' + truncate(entry.todo, 40);
+                    preview.innerText = previewPanels(entry.panels || []);
                     const time = document.createElement('div');
                     time.className = 'history-time';
                     time.innerText = formatTime(entry.updatedAt);
@@ -289,10 +294,9 @@
                 });
                 if (!res.ok) throw new Error('bad response');
                 const result = await res.json();
-                notes.value = result.notes || '';
-                todo.value = result.todo || '';
-                localStorage.setItem('myNotes', notes.value);
-                localStorage.setItem('myTodo', todo.value);
+                const panels = result.panels && result.panels.length ? result.panels : defaultPanels();
+                buildPanels(panels);
+                localStorage.setItem('page2Panels', JSON.stringify(panels));
                 setSynced(result.updatedAt);
                 historyPanel.classList.remove('open');
                 loadHistory();
@@ -306,8 +310,6 @@
             if (historyPanel.classList.contains('open')) loadHistory();
         }
 
-        notes.addEventListener('input', saveData);
-        todo.addEventListener('input', saveData);
         loadData();
     </script>
 </body>
