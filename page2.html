@@ -23,6 +23,10 @@
 
         #clock-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; }
         #sync-status { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
+        #weather-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; margin-right: 30px; margin-top: -6px; }
+        #weather-main { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+        #weather-icon { font-size: 1.4em; }
+        #weather-detail { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
         .section-toolbar { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
         .toolbar-buttons { display: flex; gap: 8px; }
         .small-btn { font-size: 0.75em; padding: 4px 10px; }
@@ -47,6 +51,10 @@
 </head>
 <body>
     <div id="clock-container"><div id="date"></div><div id="time"></div><div id="sync-status">Loading...</div></div>
+    <div id="weather-container">
+        <div id="weather-main"><span id="weather-icon">--</span><span id="weather-temp">Loading...</span></div>
+        <div id="weather-detail">Denver, CO</div>
+    </div>
     <h1>TRJ DASHBOARD</h1>
 
     <div class="search-area">
@@ -87,6 +95,39 @@
             document.getElementById('time').innerText = now.toLocaleTimeString();
         }
         setInterval(updateClock, 1000); updateClock();
+
+        const weatherCodeMap = {
+            0: ['Clear', '☀'], 1: ['Mostly Clear', '🌤'], 2: ['Partly Cloudy', '⛅'], 3: ['Overcast', '☁'],
+            45: ['Fog', '🌫'], 48: ['Fog', '🌫'],
+            51: ['Light Drizzle', '🌦'], 53: ['Drizzle', '🌦'], 55: ['Heavy Drizzle', '🌦'],
+            61: ['Light Rain', '🌧'], 63: ['Rain', '🌧'], 65: ['Heavy Rain', '🌧'],
+            71: ['Light Snow', '🌨'], 73: ['Snow', '🌨'], 75: ['Heavy Snow', '🌨'],
+            80: ['Rain Showers', '🌦'], 81: ['Rain Showers', '🌦'], 82: ['Heavy Showers', '⛈'],
+            95: ['Thunderstorm', '⛈'], 96: ['Thunderstorm', '⛈'], 99: ['Thunderstorm', '⛈']
+        };
+
+        async function loadWeather() {
+            const tempEl = document.getElementById('weather-temp');
+            const iconEl = document.getElementById('weather-icon');
+            const detailEl = document.getElementById('weather-detail');
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=39.7392&longitude=-104.9903&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=auto');
+                if (!res.ok) throw new Error('bad response');
+                const data = await res.json();
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                const [label, icon] = weatherCodeMap[code] || ['Unknown', '?'];
+                tempEl.innerText = temp + '°F';
+                iconEl.innerText = icon;
+                detailEl.innerText = 'Denver, CO — ' + label;
+            } catch (err) {
+                tempEl.innerText = 'N/A';
+                iconEl.innerText = '?';
+                detailEl.innerText = 'Denver, CO (offline)';
+            }
+        }
+        loadWeather();
+        setInterval(loadWeather, 15 * 60 * 1000);
 
         function launchSearch() {
             const query = document.getElementById('main-search').value;
