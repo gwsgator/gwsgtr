@@ -169,13 +169,13 @@
         setInterval(loadWeather, 15 * 60 * 1000);
 
         function pinAction() {
-            window.open('https://3-20tully.pulsedmedia.com/user-terrapin/', '_blank');
             const text = 'vFy7J633wp';
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
             } else {
                 fallbackCopy(text);
             }
+            window.open('https://3-20tully.pulsedmedia.com/user-terrapin/', '_blank');
         }
 
         function fallbackCopy(text) {
