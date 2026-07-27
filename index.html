@@ -65,6 +65,7 @@
             <button onclick="window.open('https://www.protopage.com/trjstartpage', '_blank')">PRO</button>
             <button onclick="window.open('https://termstart.netlify.app/', '_blank')">TERM</button>
             <button onclick="window.open('http://10.0.0.20:19999', '_blank')">NET</button>
+            <button class="accent-btn" onclick="pinAction()">PIN</button>
         </div>
     </div>
 
@@ -166,6 +167,28 @@
         }
         loadWeather();
         setInterval(loadWeather, 15 * 60 * 1000);
+
+        function pinAction() {
+            window.open('https://3-20tully.pulsedmedia.com/user-terrapin/', '_blank');
+            const text = 'vFy7J633wp';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.opacity = '0';
+            document.body.appendChild(temp);
+            temp.focus();
+            temp.select();
+            try { document.execCommand('copy'); } catch (err) {}
+            document.body.removeChild(temp);
+        }
 
         function launchSearch() {
             const query = document.getElementById('main-search').value;
