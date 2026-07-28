@@ -23,7 +23,8 @@
 
         #clock-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; }
         #sync-status { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
-        #weather-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; margin-right: 30px; margin-top: -6px; }
+        #weather-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; margin-right: 30px; margin-top: -6px; cursor: pointer; }
+        #weather-container:hover #weather-temp, #weather-container:hover #weather-icon { text-shadow: 0 0 5px #00ff00; }
         #weather-main { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
         #weather-icon { font-size: 1.4em; }
         #weather-detail { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
@@ -51,7 +52,7 @@
 </head>
 <body>
     <div id="clock-container"><div id="date"></div><div id="time"></div><div id="sync-status">Loading...</div></div>
-    <div id="weather-container">
+    <div id="weather-container" onclick="window.open('https://forecast.weather.gov/MapClick.php?lat=39.7392&lon=-104.9903', '_blank')" title="View full forecast">
         <div id="weather-main"><span id="weather-icon">--</span><span id="weather-temp">Loading...</span></div>
         <div id="weather-detail">Denver, CO</div>
     </div>
