@@ -184,7 +184,7 @@
             }
         });
 
-        const PANEL_COUNT = 9;
+        const PANEL_COUNT = 12;
         const syncStatus = document.getElementById('sync-status');
         const historyPanel = document.getElementById('history-panel');
         const historyList = document.getElementById('history-list');
@@ -198,6 +198,14 @@
                 title: 'Panel ' + (i + 1),
                 content: ''
             }));
+        }
+
+        function ensurePanelCount(panels) {
+            const list = panels.slice();
+            for (let i = list.length; i < PANEL_COUNT; i++) {
+                list.push({ id: 'p' + (i + 1), title: 'Panel ' + (i + 1), content: '' });
+            }
+            return list;
         }
 
         function buildPanels(panels) {
@@ -253,12 +261,12 @@
 
         async function loadData() {
             const localRaw = localStorage.getItem('page2Panels');
-            const localPanels = localRaw ? JSON.parse(localRaw) : null;
+            const localPanels = localRaw ? ensurePanelCount(JSON.parse(localRaw)) : null;
             try {
                 const res = await fetch(API);
                 if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
-                const remotePanels = data.panels && data.panels.length ? data.panels : null;
+                const remotePanels = data.panels && data.panels.length ? ensurePanelCount(data.panels) : null;
 
                 if (!remotePanels && localPanels) {
                     buildPanels(localPanels);
@@ -267,7 +275,14 @@
                     setSynced(result.updatedAt);
                 } else if (remotePanels) {
                     buildPanels(remotePanels);
-                    setSynced(data.updatedAt);
+                    if (remotePanels.length !== data.panels.length) {
+                        localStorage.setItem('page2Panels', JSON.stringify(remotePanels));
+                        syncStatus.innerText = 'Syncing...';
+                        const result = await pushData(remotePanels);
+                        setSynced(result.updatedAt);
+                    } else {
+                        setSynced(data.updatedAt);
+                    }
                 } else {
                     buildPanels(defaultPanels());
                     syncStatus.innerText = 'Ready';
