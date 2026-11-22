@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="/auth-gate.js"></script>
     <title>TRJ DASHBOARD - PAGE 2</title>
     <style>
         body { background: #121212; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 40px; }
@@ -250,7 +251,7 @@
         }
 
         async function pushData(panels) {
-            const res = await fetch(API, {
+            const res = await authFetch(API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ panels: panels })
@@ -263,7 +264,7 @@
             const localRaw = localStorage.getItem('page2Panels');
             const localPanels = localRaw ? ensurePanelCount(JSON.parse(localRaw)) : null;
             try {
-                const res = await fetch(API);
+                const res = await authFetch(API);
                 if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
                 const remotePanels = data.panels && data.panels.length ? ensurePanelCount(data.panels) : null;
@@ -334,7 +335,7 @@
         async function loadHistory() {
             historyList.innerText = 'Loading history...';
             try {
-                const res = await fetch(API + '?history=1');
+                const res = await authFetch(API + '?history=1');
                 if (!res.ok) throw new Error('bad response');
                 const history = await res.json();
                 if (!history.length) {
@@ -367,7 +368,7 @@
 
         async function restoreVersion(index) {
             try {
-                const res = await fetch(API, {
+                const res = await authFetch(API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'restore', index: index })

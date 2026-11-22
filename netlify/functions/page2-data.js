@@ -1,4 +1,5 @@
 const { getStore } = require('@netlify/blobs');
+const { requireAuth } = require('../lib/auth');
 
 const KEY = 'trj-page2';
 const HISTORY_KEY = 'trj-page2-history';
@@ -22,6 +23,9 @@ function sanitizePanels(panels) {
 }
 
 exports.handler = async (event) => {
+  const denied = requireAuth(event);
+  if (denied) return denied;
+
   const store = getBlobsStore();
   const params = event.queryStringParameters || {};
 

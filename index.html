@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="/auth-gate.js"></script>
     <title>TRJ DASHBOARD</title>
     <style>
         body { background: #121212; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 40px; }
@@ -98,6 +99,12 @@
     </section>
 
     <div class="grid">
+        <section><h2>Homelab Status</h2>
+            <ul><li><a href="http://10.0.0.97/" target="_blank">PDTC Network</a></li><li><a href="http://10.0.0.39:3001/status/homelab" target="_blank">Uptime Kuma</a></li><li><a href="http://10.0.0.221:8080/home-lab" target="_blank">Glance</a></li><li><a href="http://10.0.0.97:3000/" target="_blank">Grafana</a></li><li><a href="http://10.0.0.97:9090/targets" target="_blank">Prometheus Targets</a></li><li><a href="http://10.0.0.97:9093/" target="_blank">Alertmanager</a></li><li><a href="http://10.0.0.20:19999/" target="_blank">Netdata (m710q)</a></li></ul>
+        </section>
+        <section><h2>Homelab Admin</h2>
+            <ul><li><a href="https://10.0.0.21:8006/" target="_blank">Proxmox pve-hp</a></li><li><a href="https://10.0.0.20:8006/" target="_blank">Proxmox pve-m710q</a></li><li><a href="https://10.0.0.239:11443/" target="_blank">UniFi Controller</a></li><li><a href="http://10.0.0.39/admin/" target="_blank">Pi-hole RPi01</a></li><li><a href="http://pihole2/admin/" target="_blank">Pi-hole pihole2</a></li><li><a href="http://10.0.0.1/" target="_blank">Flint 2 Router</a></li><li><a href="https://10.0.0.205/" target="_blank">Comet KVM</a></li><li><a href="http://10.0.0.72:32400/web" target="_blank">Plex</a></li><li><a href="http://10.0.0.228:8096/" target="_blank">Jellyfin</a></li></ul>
+        </section>
         <section><h2>Work</h2>
             <ul>
                 <li><a href="https://app.procore.com/8863/company/home/list" target="_blank">Procore</a></li>
@@ -240,7 +247,7 @@
         }
 
         async function pushData(notesVal, todoVal) {
-            const res = await fetch(API, {
+            const res = await authFetch(API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ notes: notesVal, todo: todoVal })
@@ -253,7 +260,7 @@
             const localNotes = localStorage.getItem('myNotes') || '';
             const localTodo = localStorage.getItem('myTodo') || '';
             try {
-                const res = await fetch(API);
+                const res = await authFetch(API);
                 if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
                 const remoteNotes = data.notes || '';
@@ -314,7 +321,7 @@
         async function loadHistory() {
             historyList.innerText = 'Loading history...';
             try {
-                const res = await fetch(API + '?history=1');
+                const res = await authFetch(API + '?history=1');
                 if (!res.ok) throw new Error('bad response');
                 const history = await res.json();
                 if (!history.length) {
@@ -347,7 +354,7 @@
 
         async function restoreVersion(index) {
             try {
-                const res = await fetch(API, {
+                const res = await authFetch(API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'restore', index: index })

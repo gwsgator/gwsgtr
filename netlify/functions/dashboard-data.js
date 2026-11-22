@@ -1,4 +1,5 @@
 const { getStore } = require('@netlify/blobs');
+const { requireAuth } = require('../lib/auth');
 
 const KEY = 'trj-dashboard';
 const HISTORY_KEY = 'trj-dashboard-history';
@@ -13,6 +14,9 @@ function getBlobsStore() {
 }
 
 exports.handler = async (event) => {
+  const denied = requireAuth(event);
+  if (denied) return denied;
+
   const store = getBlobsStore();
   const params = event.queryStringParameters || {};
 

@@ -1,2 +1,8 @@
 [build]
   functions = "netlify/functions"
+
+# Keep the dashboard out of search engines.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
