@@ -22,14 +22,16 @@
   var style = document.createElement('style');
   style.textContent =
     'html.dash-locked body > *:not(#dash-login){visibility:hidden}' +
-    '#dash-login{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#121212;z-index:99999;font-family:"Courier New",Courier,monospace}' +
+    '#dash-login{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:var(--bg,#0a0e14);z-index:99999;font-family:var(--font,"Segoe UI",system-ui,sans-serif)}' +
     'html.dash-locked #dash-login{display:flex}' +
-    '#dash-login form{border:1px solid #00ff00;padding:30px 40px;text-align:center;background:#000}' +
-    '#dash-login h1{color:#00ff00;font-size:1.3em;margin:0 0 20px}' +
-    '#dash-login input{background:#000;border:1px solid #00ff00;color:#fff;padding:8px;width:240px;font-family:inherit}' +
-    '#dash-login button{display:block;margin:15px auto 0;background:#00ff00;color:#000;border:none;padding:8px 20px;font-weight:bold;cursor:pointer;font-family:inherit}' +
-    '#dash-login .err{color:#ff4444;min-height:1.2em;margin-top:10px}' +
-    '#dash-lock{position:fixed;right:12px;bottom:10px;background:none;border:1px solid #00aa00;color:#00aa00;font:11px "Courier New",monospace;padding:3px 8px;cursor:pointer;z-index:9999}';
+    '#dash-login form{border:1px solid var(--border-strong,#2a4458);border-radius:var(--radius,10px);padding:32px 40px;text-align:center;background:var(--panel,#0f1621);box-shadow:0 20px 60px rgba(0,0,0,.5)}' +
+    '#dash-login h1{display:block;border:none;color:var(--heading,#e8f1f8);font-size:1.25em;margin:0 0 22px;padding:0;letter-spacing:var(--title-spacing,.02em)}' +
+    '#dash-login input{display:block;margin:0 auto;background:var(--input-bg,#070b11);border:1px solid var(--border-strong,#2a4458);border-radius:6px;color:var(--text,#d6e2ee);padding:9px 10px;width:260px;font-family:inherit;font-size:1em}' +
+    '#dash-login input:focus{outline:none;border-color:var(--accent,#2dd4bf)}' +
+    '#dash-login button{display:block;margin:16px auto 0;background:var(--accent,#2dd4bf);color:var(--accent-text,#04201c);border:none;border-radius:6px;padding:9px 26px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.05em}' +
+    '#dash-login .err{color:var(--danger,#f87171);min-height:1.2em;margin-top:10px;font-size:.9em}' +
+    '#dash-lock{position:fixed;right:12px;bottom:10px;background:none;border:1px solid var(--border-strong,#2a4458);border-radius:6px;color:var(--muted,#7d91a6);font:600 11px var(--font,system-ui);padding:4px 9px;cursor:pointer;z-index:9999;letter-spacing:.06em}' +
+    '#dash-lock:hover{color:var(--heading,#fff);border-color:var(--accent,#2dd4bf)}';
   document.head.appendChild(style);
   if (!getToken()) document.documentElement.classList.add('dash-locked');
 

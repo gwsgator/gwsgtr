@@ -4,60 +4,20 @@
     <meta charset="UTF-8">
     <script src="/auth-gate.js"></script>
     <title>TRJ DASHBOARD - PAGE 2</title>
-    <style>
-        body { background: #121212; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 40px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
-        h1 { font-size: 1.5em; border-bottom: 2px solid #00ff00; padding-bottom: 10px; display: inline-block; }
-        h2 { border-bottom: 1px solid #00ff00; padding-bottom: 5px; font-size: 1.1em; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 8px 0; }
-        a { color: #00cc00; text-decoration: none; }
-        a:hover { color: #ffffff; text-shadow: 0 0 5px #00ff00; }
-
-        .search-area { display: flex; gap: 20px; margin-bottom: 30px; align-items: flex-start; }
-        .search-group { display: flex; gap: 10px; align-items: center; }
-        input[type="text"] { background: #000; border: 1px solid #00ff00; color: #fff; padding: 8px; width: 200px; }
-        button { background: #00ff00; color: #000; border: none; padding: 8px 15px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #ffffff; }
-        .accent-btn { background: #ff00ff; color: #000; }
-        .accent-btn:hover { background: #ffffff; color: #000; }
-
-        #clock-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; }
-        #sync-status { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
-        #weather-container { float: right; text-align: right; font-size: 1.2em; font-weight: bold; margin-right: 30px; margin-top: -6px; cursor: pointer; }
-        #weather-container:hover #weather-temp, #weather-container:hover #weather-icon { text-shadow: 0 0 5px #00ff00; }
-        #weather-main { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
-        #weather-icon { font-size: 1.4em; }
-        #weather-detail { font-size: 0.6em; color: #00cc00; font-weight: normal; margin-top: 4px; }
-        .section-toolbar { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
-        .toolbar-buttons { display: flex; gap: 8px; }
-        .small-btn { font-size: 0.75em; padding: 4px 10px; }
-
-        #history-panel { display: none; margin-top: 15px; border: 1px solid #00ff00; padding: 15px; background: #000; }
-        #history-panel.open { display: block; }
-        .history-entry { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #003300; gap: 15px; }
-        .history-entry:last-child { border-bottom: none; }
-        .history-preview { font-size: 0.85em; color: #00cc00; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-        .history-time { font-size: 0.8em; color: #00cc00; white-space: nowrap; }
-
-        .panels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
-        .panel { border: 1px solid #00ff00; background: #000; padding: 10px; display: flex; flex-direction: column; box-sizing: border-box; }
-        .panel-title { background: transparent; border: none; border-bottom: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 1.05em; font-weight: bold; padding: 4px 2px; margin-bottom: 8px; width: 100%; box-sizing: border-box; }
-        .panel-title:focus { outline: none; border-bottom: 1px solid #ffffff; }
-        .panel textarea { flex: 1; min-height: 180px; background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 8px; resize: vertical; font-family: inherit; box-sizing: border-box; width: 100%; }
-
-        @media (max-width: 900px) {
-            .panels-grid { grid-template-columns: repeat(1, 1fr); }
-        }
-    </style>
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/theme.css">
 </head>
 <body>
-    <div id="clock-container"><div id="date"></div><div id="time"></div><div id="sync-status">Loading...</div></div>
-    <div id="weather-container" onclick="window.open('https://forecast.weather.gov/MapClick.php?lat=39.7392&lon=-104.9903', '_blank')" title="View full forecast">
-        <div id="weather-main"><span id="weather-icon">--</span><span id="weather-temp">Loading...</span></div>
-        <div id="weather-detail">Denver, CO</div>
-    </div>
-    <h1>TRJ DASHBOARD</h1>
+    <header class="topbar">
+        <div class="brand"><span class="brand-dot"></span><h1>TRJ DASHBOARD</h1></div>
+        <div class="topbar-right">
+            <div id="weather-container" class="stat-tile" onclick="window.open('https://forecast.weather.gov/MapClick.php?lat=39.7392&lon=-104.9903', '_blank')" title="View full forecast">
+                <div id="weather-main"><span id="weather-icon">--</span><span id="weather-temp">Loading...</span></div>
+                <div id="weather-detail">Denver, CO</div>
+            </div>
+            <div id="clock-container" class="stat-tile"><div id="date"></div><div id="time"></div><div id="sync-status">Loading...</div></div>
+        </div>
+    </header>
 
     <div class="search-area">
         <input type="text" id="main-search" placeholder="Search (press 's')" onkeydown="if(event.key==='Enter') launchSearch()">
@@ -65,19 +25,20 @@
             <input type="text" id="exact-phrase" placeholder="Exact Phrase">
             <input type="text" id="must-contain" placeholder="Must Contain">
             <button onclick="launchAdvSearch()">LAUNCH SEARCH</button>
-            <button onclick="clearSearch()" style="background:#ff4444; color:#fff;">CLEAR</button>
+            <button class="danger-btn" onclick="clearSearch()">CLEAR</button>
         </div>
-        <div style="margin-left: auto; display: flex; gap: 10px;">
+        <div class="nav-buttons">
             <button class="accent-btn" onclick="window.location.href='index.html'">HOME</button>
             <button onclick="window.open('https://besthomepageever.com/', '_blank')">BHE</button>
             <button onclick="window.open('https://www.protopage.com/trjstartpage', '_blank')">PRO</button>
             <button onclick="window.open('https://termstart.netlify.app/', '_blank')">TERM</button>
             <button class="accent-btn" onclick="pinAction()">PIN</button>
+            <button id="theme-toggle" class="ghost-btn" onclick="toggleTheme()">THEME</button>
         </div>
     </div>
 
     <div class="section-toolbar">
-        <h2 style="border-bottom: none; padding-bottom: 0;">Notes Grid</h2>
+        <h2>Notes Grid</h2>
         <div class="toolbar-buttons">
             <button class="small-btn" onclick="manualSave()">SAVE NOW</button>
             <button class="small-btn" onclick="toggleHistory()">HISTORY</button>
@@ -133,7 +94,8 @@
         setInterval(loadWeather, 15 * 60 * 1000);
 
         function pinAction() {
-            const text = 'vFy7J633wp';
+            const text = window.dashPin || '';
+            if (!text) console.warn('PIN not loaded (SEEDBOX_PIN not set or not signed in)');
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
             } else {
